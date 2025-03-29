@@ -1,58 +1,86 @@
 ### DBT Project using DBT Core and SQL Server
 
+---
+
 ### Pre-Req:
 - GIT Installed
-- VSC Code Installed
+- VS Code Installed
 - Python 3.10 Installed
-- SQL Server installed 
+- SQL Server Installed
+
+---
 
 ### Steps to Setup DBT Core Locally:
 
-- _Create a Project in VSC_
-<br>
-- _Setup a .venv using command_ : 
-```py -3.10 -m venv dbt-env ```
-<br>  
-- _Activate the env using command_ : 
-```dbt-env\Scripts\activate```  
-<br>
-- If during activation , there is an error **" microsoft execution policy"** then execute below and then try to activate again !
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-<br>
-- _Install dbt core and adapter_: 
-```py -3.10 -m pip install dbt-core dbt-sqlserver```
-<br>
-- _Verify the compatibility with dbt-core and adapter_ 
-```dbt --version```
-<br>    
-- _Initiate a DBT project and fill the details. It will create dbt folder structure and connection yml_ 
-    ```dbt init test_dbt_project```   
-    _Connection Profile for test_dbt_project usually available to your_ **C:\Users\<username>\.dbt\profiles.yml** . 
-<br>    
-- _Verify the profile.yml and test the connection using_
-```dbt debug```
-- _Here is the sample connection detail under profile.yml_
-``` 
-    test_dbt_project:
-    target: dev
-    outputs:
-        dev:
-            type: sqlserver
-            driver: 'ODBC Driver 18 for SQL Server'
-            host: DESKTOP-ZF6791RG 
-            database: AdventureWorks
-            schema: HumanResources
-            windows_login: True
-            trust_cert: True
-            threads: 4
-```
-- You can get host details from SQL server managment studio by running below code
+#### 1. Create a Project in VS Code
 
+#### 2. Setup a Virtual Environment (.venv)
+Run the following command:
+```sh
+py -3.10 -m venv dbt-env
 ```
+
+#### 3. Activate the Virtual Environment
+```sh
+dbt-env\Scripts\activate
+```
+
+If you encounter an error **"Microsoft execution policy"**, execute the following command and then try activating again:
+```sh
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+#### 4. Install DBT Core and SQL Server Adapter
+```sh
+py -3.10 -m pip install dbt-core dbt-sqlserver
+```
+
+#### 5. Verify Compatibility
+```sh
+dbt --version
+```
+
+#### 6. Initiate a DBT Project
+This command will create a DBT folder structure and connection `.yml` file:
+```sh
+dbt init test_dbt_project
+```
+
+Connection Profile for `test_dbt_project` is usually available in:
+```sh
+C:\Users\<username>\.dbt\profiles.yml
+```
+
+#### 7. Verify `profiles.yml` and Test the Connection
+```sh
+dbt debug
+```
+
+#### 8. Sample `profiles.yml` Configuration
+```yaml
+test_dbt_project:
+  target: dev
+  outputs:
+    dev:
+      type: sqlserver
+      driver: 'ODBC Driver 18 for SQL Server'
+      host: DESKTOP-ZF6791RG
+      database: AdventureWorks
+      schema: HumanResources
+      windows_login: True
+      trust_cert: True
+      threads: 4
+```
+
+#### 9. Get Host Details from SQL Server Management Studio
+Run the following SQL command:
+```sql
 USE AdventureWorks
 GO
 SELECT @@SERVERNAME
 ```
+
+---
 
 ### Resources:
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
