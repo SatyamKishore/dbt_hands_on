@@ -1,0 +1,21 @@
+test_dbt_project:
+  target: stg
+  outputs:
+    dev:
+      type: sqlserver
+      driver: 'ODBC Driver 18 for SQL Server'
+      host: DESKTOP-Q4A15RG
+      database: AdventureWorks
+      schema: HumanResources
+      windows_login: True
+      trust_cert: True
+      threads: 2
+    stg:
+      type: sqlserver
+      driver: 'ODBC Driver 18 for SQL Server'
+      host: DESKTOP-Q4A15RG
+      database: AdventureWorks
+      schema: dbt_target
+      windows_login: True
+      trust_cert: True
+      threads: 4
