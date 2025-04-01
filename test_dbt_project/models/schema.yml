@@ -1,0 +1,23 @@
+
+version: 2
+
+models:
+  - name: customer_360
+    description: "Running tests on dbt model"
+    columns:
+      - name: FullName
+        description: "Employee Name"
+        data_tests:
+          - not_null
+      - name: BusinessEntityID
+        description: "The business entity ID"
+        data_tests:
+          - unique
+          - not_null
+      - name: Gender
+        description: "Valid gender List"
+        data_tests:
+          - accepted_values:
+              values: [M, F]
+
+

@@ -80,6 +80,47 @@ GO
 SELECT @@SERVERNAME
 ```
 
+#### 10. To run dbt Model 
+```sh
+dbt run
+dbt run --s customer_360 ## To run specific model
+```
+
+#### 11. To run data test defined on models.
+Creare schema.yml file with the test you want to perfrom .
+```yaml
+
+version: 2
+
+models:
+  - name: customer_360
+    description: "Running tests on dbt model"
+    columns:
+      - name: FullName
+        description: "Employee Name"
+        data_tests:
+          - not_null
+      - name: BusinessEntityID
+        description: "The business entity ID"
+        data_tests:
+          - unique
+          - not_null
+      - name: Gender
+        description: "Valid gender List"
+        data_tests:
+          - accepted_values:
+              values: [M, F]
+```
+To run data tests
+```sh
+dbt test
+```
+
+#### 12. To generate documentation of dbt Model and view serv layer
+```sh
+dbt docs generate
+dbt docs serve
+```
 ---
 
 ### Resources:
