@@ -1,3 +1,9 @@
+{{
+      config(
+            materialized='incremental',
+            unique_key='BusinessEntityID'
+      )
+}}
 WITH Person
 AS
 (
@@ -28,6 +34,7 @@ SELECT [BusinessEntityID]
       ,[MaritalStatus]
       ,[Gender]
       ,[HireDate]
+      ,[ModifiedDate]
 FROM [AdventureWorks].[HumanResources].[Employee]
 )
 Select 
@@ -38,7 +45,7 @@ CASE WHEN Title IS NULL THEN
 		 END 
 	ELSE Title
 	END as Title,
-FullName, EmailAddress, NationalIDNumber , JobTitle, BirthDate , MaritalStatus , Gender , HireDate 
+FullName, EmailAddress, NationalIDNumber , JobTitle, BirthDate , MaritalStatus , Gender , HireDate , ModifiedDate , current_timestamp as ETL_LoadTimestamp
 from 
 	Person as P
 join
@@ -48,3 +55,7 @@ join
 	Email as M
 on P.BusinessEntityID = M.BusinessEntityID
 
+{% if is_incremental() %}
+WHERE ModifiedDate > (SELECT MAX(ModifiedDate) FROM {{ this }}) or P.BusinessEntityID > (SELECT MAX(BusinessEntityID) FROM {{ this }})
+
+{% endif %}

@@ -121,6 +121,32 @@ dbt test
 dbt docs generate
 dbt docs serve
 ```
+
+#### 13. Incremental Run
+**Scenario 1:** Change in attribute
+```sql
+Update [AdventureWorks].[HumanResources].[Employee]
+set [JobTitle] = 'Senior Design Engineer'
+    ,[ModifiedDate] = '2025-04-14 00:00:00.000'
+where BusinessEntityID = 5
+```
+
+```sql
+{{
+      config(
+            materialized='incremental',
+            unique_key='BusinessEntityID'
+      )
+}}
+
+<< SQL Code>>
+
+{% if is_incremental() %}
+WHERE ModifiedDate > (SELECT MAX(ModifiedDate) FROM {{ this }})
+{% endif %}
+```
+**Scenario 2:** New Record
+
 ---
 
 ### Resources:
